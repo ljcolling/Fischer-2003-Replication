@@ -11,10 +11,14 @@
 % written by Lincoln Colling <lincoln@colling.net.nz>
 function ifi = Calibrate
 
-devMode = 1;
+% --- DO NOT CHANGE -- %
+devMode = 0;
 if devMode == 1
     Screen('Preference', 'SkipSyncTests', 1);
 end
+% --- END --- %
+
+
 thePath = [cd filesep];
 [keyboardIndices, productNames, allInfos] = GetKeyboardIndices;
 disp(['Found the following keyboards: ' productNames])

@@ -1,5 +1,13 @@
 function PTB_Fischer()
 codeVersion = '0.9';
+
+% --- DO NOT CHANGE -- %
+skipVercheck = 0; % 1 = check matlab and octave versions
+skipSyncTests = 1; % 1 = skip video sync tests. ALWAYS set to 0
+devMode = 0; % set development flag
+% --- END --- %
+
+
 global ME
 
 % make sure the keyboard is setup correctly.
@@ -51,11 +59,7 @@ end
 
 
 
-% --- DO NOT CHANGE -- %
-skipVercheck = 0; % 1 = check matlab and octave versions
-skipSyncTests = 1; % 1 = skip video sync tests. ALWAYS set to 0
-devMode = 1; % set development flag
-% --- END --- %
+
 
 if devMode == 1
     warning('Development mode is ON! Turn it off unless you know what you are doing')
