@@ -1,5 +1,5 @@
 function PTB_Fischer()
-codeVersion = '0.9';
+codeVersion = '0.9.9';
 
 % --- DO NOT CHANGE -- %
 skipVercheck = 0; % 1 = check matlab and octave versions
@@ -225,7 +225,7 @@ try
     for b = 1 : nBlocks
         trialStruct{b} = trialStructPerBlock(randperm(nTrialsPerBlock,nTrialsPerBlock));
     end
-    clear b;
+    %clear b;
     trialStruct = vertcat(trialStruct{:});
     
     HideCursor
@@ -631,7 +631,8 @@ try
     ShowCursor;
     
     
-    [mathTestScore, mathTestReponse] = math_test();
+    
+    [mathTestScore, mathTestReponse] = math_test;
     
     handed = getHandedness();
     ListenChar(0); %makes it so characters typed do show up in the command window
@@ -642,7 +643,14 @@ try
     clc;
     WaitSecs(.2);
     clc;
-    lang = getLanguageDetails;
+    ok = 0;
+    while ok == 0
+        lang = getLanguageDetails;
+        if lang >= 1 && lang <= 3;
+            ok = 1;
+        end
+    end
+    
     age = input('What is your age? ');
     
     
@@ -663,7 +671,10 @@ catch ME
         workspaceData = struct;
         for cc = 1:length(workspaceVars)
             currentVar = workspaceVars{cc};
-            workspaceData.(currentVar) = eval( currentVar );
+            try
+                workspaceData.(currentVar) = eval( currentVar );
+            catch
+            end
         end
         
         ProduceErrorLog(workspaceData);
@@ -724,7 +735,7 @@ end
         DrawFormattedText(window, ['\nYour task is to press [space] as soon as you see a white circle appear in either the left or the right box on the screen.'...
             '\n\nPlease try to keep your eyes fixed on the white spot in the middle of the screen and try not to move your eyes around.'...
             '\nAn example of the fixation point and the boxes is shown on screen'...
-            '\nPress [SPACE] one you understand the instructions.'], 'center', 0, [1 1 1], 90,[],[],2);
+            '\nPress [SPACE] one you understand the instructions.'], 'center', 0, [1 1 1], 80,[],[],2);
         
         
         Screen('DrawDots', window, [xCenter; yCenter], fixationDiameterPix, white, [], 2);
@@ -734,7 +745,7 @@ end
         presstogo
         
         DrawFormattedText(window,['Before the target appears you will see a number that appears in the same place as the fixation point. This number is not relavent to your task and it won''t help you predict when and where the target will appear.'...
-            '\n\nFeel free to take breaks when prompted. \n\n\nWhen you are done with the experiment please inform the experimenter.\n Press [SPACE] to start'], 'center','center',[1 1 1],90,[],[],2);
+            '\n\nFeel free to take breaks when prompted. \n\n\nWhen you are done with the experiment please inform the experimenter.\n Press [SPACE] to start'], 'center','center',[1 1 1],80,[],[],2);
         
         Screen('Flip', window);
         presstogo
@@ -787,7 +798,7 @@ end
 
     function handed = getHandedness
         
-        
+       
         questions ={'With which hand do you write?';...
             'In which hand do you prefer to use a spoon when eating?';...
             'In which hand do you prefer to hold a toothbrush when cleaning your teeth?';...
@@ -804,7 +815,7 @@ end
         
         
         Screen('TextSize',window,24);
-        DrawFormattedText(window, ['The ten questions that follow ask which hand you prefer to use in a number of different situations. Please click one box for each question, indicating whether you prefer to use the left-hand, either-hand, or the right-hand for that task. Only tick the EITHER box if one hand is truly no better than the other. Please answer all questions, and even if you have had little experience in a particular task, try imagining doing that task and select a response.'], 'center', 'center', [1 1 1], 90,[],[],2);
+        DrawFormattedText(window, ['The ten questions that follow ask which hand you prefer to use in a number of different situations. Please click one box for each question, indicating whether you prefer to use the left-hand, either-hand, or the right-hand for that task. Only tick the EITHER box if one hand is truly no better than the other. Please answer all questions, and even if you have had little experience in a particular task, try imagining doing that task and select a response. Press [SPACE] to start.'], 'center', 'center', [1 1 1], 65,[],[],2);
         Screen('Flip', window);
         presstogo
         
@@ -847,7 +858,7 @@ end
         % Loop the animation until a key is pressed
         buttons = 0;
         Screen('TextFont', window, 'Ariel');
-        Screen('TextSize', window, 50);
+        Screen('TextSize', window, 30);
         [~, ~, textboundsleft] = DrawFormattedText(window, 'LEFT', sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
         [~, ~, textboundscentre] = DrawFormattedText(window, 'EITHER', sum(allRects([1 3],2))/2, sum(allRects([2 4],2))/2 , white);
         [~, ~, textboundsright] = DrawFormattedText(window, 'RIGHT', sum(allRects([1 3],3))/2, sum(allRects([2 4],3))/2 , white);
@@ -896,7 +907,7 @@ end
             Screen('FillRect', window, allColors, allRects)
             
             
-            DrawFormattedText(window, questions{q}, 'center', yCenter-200, [1 1 1], 80, [], [], 2);
+            DrawFormattedText(window, questions{q}, 'center', yCenter-300, [1 1 1], 70, [], [], 2);
             
             
             DrawFormattedText(window, 'LEFT', (sum(allRects([1 3],1))/2) - diff(textboundsleft([1,3]))/2, (sum(allRects([2 4],1))/2) + (diff(textboundsleft([2,4]))/4) , white);
@@ -938,308 +949,310 @@ end
         disp(' ')
         lang = input('Select 1 to 3: ');
         
-        sca
+        
+        
     end
 
-    function [score, responseStruct] = math_test()
+    function [score, responseStruct] = math_test
         
         
-        try
-            questions =...
-                {'6 + 1';...
-                '2 + 4';...
-                '3 - 2';...
-                '5 - 2';...
-                '3 - 1';...
-                '5 - 1';...
-                '9 + 7';...
-                '17 - 9';...
-                '89 - 18';...
-                '5 x 3';...
-                '8 ÷ 2';...
-                '8 x 5';...
-                '13 x 7';...
-                '48 - 19';...
-                '14 x 6';...
-                '2/3 - 1/3';...
-                '126 ÷ 42';...
-                '288 ÷ 48';...
-                '7/8 - 2/8';...
-                '3250 / 25';...
-                '2 3/4 + 4 1/8';...
-                '1.05 x 0.2';...
-                '-18 + 12';...
-                '-6 x 7';...
-                '4/7 ÷ 1/2'};
+        %try
+        questions =...
+            {'6 + 1';...
+            '2 + 4';...
+            '3 - 2';...
+            '5 - 2';...
+            '3 - 1';...
+            '5 - 1';...
+            '9 + 7';...
+            '17 - 9';...
+            '89 - 18';...
+            '5 x 3';...
+            '8 ÷ 2';...
+            '8 x 5';...
+            '13 x 7';...
+            '48 - 19';...
+            '14 x 6';...
+            '2/3 - 1/3';...
+            '126 ÷ 42';...
+            '288 ÷ 48';...
+            '7/8 - 2/8';...
+            '3250 / 25';...
+            '2 3/4 + 4 1/8';...
+            '1.05 x 0.2';...
+            '-18 + 12';...
+            '-6 x 7';...
+            '4/7 ÷ 1/2'};
+        
+        level = reshape(ones(5,5) .* repmat([1 2 3 4 5],5,1),1,25);
+        incorrectByLevel = zeros(5,1);
+        orders = cell2mat(arrayfun(@(x) randperm(4,4),1:length(questions),'UniformOutput',false)');
+        correct = zeros(length(questions),1);
+        responses = zeros(length(questions),4);
+        
+        answers = {...
+            '7','1','5','2';...
+            '6','2','7','8';...
+            '1','3','2','4';...
+            '3','1','4','8';...
+            '2','0','3','6';...
+            '4','2','5','7';...
+            '16','12','15','23';...
+            '8','26','5','11';...
+            '71','56','107','75';...
+            '15','45','18','25';...
+            '4','6','16','2';...
+            '40','45','85','30';...
+            '91','37','81','107';...
+            '29','23','30','22';...
+            '84','64','72','52';...
+            '1/3','1/6','1/2','2/9';...
+            '3','4','4 1/2','5';...
+            '6','7','7 1/2','9';...
+            '5/8','3/5','1 3/5','1/8';...
+            '130','50','80','110';...
+            '6 7/8','6 1/2','8 1/2','7 1/4';...
+            '0.21','2.1','0.3','2.2';...
+            '-6','6','-30','30';...
+            '-42','45','-67','1';...
+            '8/7','1 1/4','2/7','1/7'};
+        
+        
+        
+        
+        
+        %     Get the size of the on screen window
+        [screenXpixels, screenYpixels] = Screen('WindowSize', window);
+        
+        [maxValue, ~, ~] = Screen('ColorRange', window);
+        
+        %    Query the frame duration
+        ifi = Screen('GetFlipInterval', window);
+        
+        
+        Screen('TextSize',window,24);
+        DrawFormattedText(window, ['You will be presented with a few maths problems. Use the mouse to click on the correct answer. You have 30 seconds to answer each problem, so keep an eye on the timer in the corner. Only give your answer when you are sure.\nPress [SPACE] to start.'], 'center', 'center', white, 70,[],[],2);
+        Screen('Flip', window);
+        presstogo
+        
+        % Make a base Rect of 200 by 200 pixels
+        baseRect = [0 0 200 200];
+        
+        % Screen X positions of our three rectangles
+        squareXpos = [screenXpixels * 0.20 screenXpixels * 0.40  screenXpixels * 0.60 screenXpixels * 0.80];
+        numSqaures = length(squareXpos);
+        
+        % Set the colors to Red, Green and Blue
+        
+        % Make our rectangle coordinates
+        allRects = nan(4, 4);
+        for i = 1:numSqaures
+            allRects(:, i) = CenterRectOnPointd(baseRect, squareXpos(i), yCenter);
+        end
+        
+        allColors = [0 0 0 0; 0 0 0 0; 0 0 0 0];
+        
+        
+        % Define red and blue
+        offSquare = white;%[1 0 0];
+        onSquare = [0 maxValue 0];
+        
+        % Here we set the initial position of the mouse to be in the centre of the
+        % screen
+        SetMouse(xCenter, yCenter, window);
+        
+        
+        % Loop the animation until a key is pressed
+        buttons = 0;
+        Screen('TextFont', window, 'Ariel');
+        Screen('TextSize', window, 50);
+        %[~, ~, textboundsleft] = DrawFormattedText(window, 'LEFT', sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
+        %[~, ~, textboundscentre] = DrawFormattedText(window, 'EITHER', sum(allRects([1 3],2))/2, sum(allRects([2 4],2))/2 , white);
+        %[~, ~, textboundsright] = DrawFormattedText(window, 'RIGHT', sum(allRects([1 3],3))/2, sum(allRects([2 4],3))/2 , white);
+        
+        q = 1;
+        buttons = 0;
+        opts1 = 0;
+        opts2 = 0;
+        opts3 = 0;
+        opts4 = 0;
+        selected = 0;
+        
+        questionStart = GetSecs;
+        timeLimit = 30;
+        
+        if devMode == 1
+            timeLimit = 5;
+        end
+        
+        doQuestions = 1;
+        
+        
+        while q <= length(questions)
             
-            level = reshape(ones(5,5) .* [1 2 3 4 5],1,25);
-            incorrectByLevel = zeros(5,1);
-            orders = cell2mat(arrayfun(@(x) randperm(4,4),1:length(questions),'UniformOutput',false)');
-            correct = zeros(length(questions),1);
-            responses = zeros(length(questions),4);
+            responded = 0;
+            thisQuestion = questions{q};
+            thisOrder = orders(q,:);
+            thisAnswers = answers(q,:);
+            thisCorrect = find(thisOrder==1);
             
-            answers = {...
-                '7','1','5','2';...
-                '6','2','7','8';...
-                '1','3','2','4';...
-                '3','1','4','8';...
-                '2','0','3','6';...
-                '4','2','5','7';...
-                '16','12','15','23';...
-                '8','26','5','11';...
-                '71','56','107','75';...
-                '15','45','18','25';...
-                '4','6','16','2';...
-                '40','45','85','30';...
-                '91','37','81','107';...
-                '29','23','30','22';...
-                '84','64','72','52';...
-                '1/3','1/6','1/2','2/9';...
-                '3','4','4 1/2','5';...
-                '6','7','7 1/2','9';...
-                '5/8','3/5','1 3/5','1/8';...
-                '130','50','80','110';...
-                '6 7/8','6 1/2','8 1/2','7 1/4';...
-                '0.21','2.1','0.3','2.2';...
-                '-6','6','-30','30';...
-                '-42','45','-67','1';...
-                '8/7','1 1/4','2/7','1/7'};
-            
-            
-            
-            
-            
-            %     Get the size of the on screen window
-            [screenXpixels, screenYpixels] = Screen('WindowSize', window);
-            
-            [maxValue, ~, ~] = Screen('ColorRange', window);
-            
-            %    Query the frame duration
-            ifi = Screen('GetFlipInterval', window);
-            
-            
-            Screen('TextSize',window,24);
-            DrawFormattedText(window, ['You will be presented with a few maths problems. Use the mouse to click on the correct answer. You have 30 seconds to answer each problem, so keep an eye on the timer in the corner. Only give your answer when you are sure.\nPress [SPACE] to start.'], 'center', 'center', white, 90,[],[],2);
-            Screen('Flip', window);
-            presstogo
-            
-            % Make a base Rect of 200 by 200 pixels
-            baseRect = [0 0 200 200];
-            
-            % Screen X positions of our three rectangles
-            squareXpos = [screenXpixels * 0.20 screenXpixels * 0.40  screenXpixels * 0.60 screenXpixels * 0.80];
-            numSqaures = length(squareXpos);
-            
-            % Set the colors to Red, Green and Blue
-            
-            % Make our rectangle coordinates
-            allRects = nan(4, 4);
-            for i = 1:numSqaures
-                allRects(:, i) = CenterRectOnPointd(baseRect, squareXpos(i), yCenter);
-            end
-            
-            allColors = [0 0 0 0; 0 0 0 0; 0 0 0 0];
-            
-            
-            % Define red and blue
-            offSquare = white;%[1 0 0];
-            onSquare = [0 maxValue 0];
-            
-            % Here we set the initial position of the mouse to be in the centre of the
-            % screen
-            SetMouse(xCenter, yCenter, window);
-            
-            
-            % Loop the animation until a key is pressed
-            buttons = 0;
-            Screen('TextFont', window, 'Ariel');
-            Screen('TextSize', window, 50);
-            [~, ~, textboundsleft] = DrawFormattedText(window, 'LEFT', sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
-            [~, ~, textboundscentre] = DrawFormattedText(window, 'EITHER', sum(allRects([1 3],2))/2, sum(allRects([2 4],2))/2 , white);
-            [~, ~, textboundsright] = DrawFormattedText(window, 'RIGHT', sum(allRects([1 3],3))/2, sum(allRects([2 4],3))/2 , white);
-            
-            q = 1;
-            buttons = 0;
-            opts1 = 0;
-            opts2 = 0;
-            opts3 = 0;
-            opts4 = 0;
-            selected = 0;
-            
-            questionStart = GetSecs;
-            timeLimit = 30;
-            
-            if devMode == 1
-                timeLimit = 5;
-            end
-            
-            
-            for q = 1 : length(questions)
+            while responded == 0
+                timeRemaining = timeLimit - round(GetSecs  - questionStart);
                 
-                responded = 0;
-                thisQuestion = questions{q};
-                thisOrder = orders(q,:);
-                thisAnswers = answers(q,:);
-                thisCorrect = find(thisOrder==1);
+                clear buttons
+                % Get the current position of the mouse
+                [x, y, buttons] = GetMouse(window);
                 
-                while responded == 0
-                    timeRemaining = timeLimit - round(GetSecs  - questionStart);
+                % Center the rectangle on the centre of the screen
+                
+                % See if the mouse cursor is inside the square
+                opts1 = IsInRect(x, y, allRects(:,1));
+                opts2 = IsInRect(x, y, allRects(:,2));
+                opts3 = IsInRect(x, y, allRects(:,3));
+                opts4 = IsInRect(x, y, allRects(:,4));
+                
+                if opts1 == 1
                     
+                    opts1_colour = onSquare;
+                else
+                    
+                    opts1_colour = offSquare;
+                end
+                
+                if opts2 == 1
+                    
+                    opts2_colour = onSquare;
+                else
+                    
+                    opts2_colour = offSquare;
+                end
+                
+                if opts3 == 1
+                    
+                    opts3_colour = onSquare;
+                else
+                    
+                    opts3_colour = offSquare;
+                end
+                
+                if opts4 == 1
+                    
+                    opts4_colour = onSquare;
+                else
+                    
+                    opts4_colour = offSquare;
+                end
+                
+                
+                
+                Screen('FillRect', window, allColors, allRects)
+                
+                
+                DrawFormattedText(window, questions{q}, 'center', yCenter-200, white, 80, [], [], 2);
+                DrawFormattedText(window, num2str(timeRemaining),screenXpixels - 100, 100,white,80,[],[],2);
+                
+                
+                
+                if devMode == 1
+                    if thisCorrect == 1
+                        opts1_colour = [0 maxValue 0];
+                    elseif thisCorrect == 2
+                        opts2_colour = [0 maxValue 0];
+                    elseif thisCorrect == 3
+                        opts3_colour = [0 maxValue 0];
+                    elseif thisCorrect == 4
+                        opts4_colour = [0 maxValue 0];
+                    end
+                end
+             
+                DrawFormattedText(window, thisAnswers{thisOrder(1)}, screenXpixels * 0.20, yCenter , opts1_colour);
+                DrawFormattedText(window, thisAnswers{thisOrder(2)}, screenXpixels * 0.40, yCenter , opts2_colour);
+                DrawFormattedText(window, thisAnswers{thisOrder(3)}, screenXpixels * 0.60, yCenter , opts3_colour);
+                DrawFormattedText(window, thisAnswers{thisOrder(4)}, screenXpixels * 0.80, yCenter , opts4_colour);
+                % Draw a white dot where the mouse is
+                Screen('DrawDots', window, [x y], 10, white, [], 2);
+                
+                % Flip to the screen
+                vbl  = Screen('Flip', window, vbl + (waitframes - 0.5) * ifi);
+                
+                
+                if timeRemaining == 0
+                    correct(q,1) = 0;
+                    incorrectByLevel(level(q),1) = incorrectByLevel(level(q),1) + 1;
+                    thisResponse = [opts1 opts2 opts3 opts4];
+                    responded = 1;
+                    opts1 = 0;
+                    opts3 = 0;
+                    opts2= 0;
+                    opts4 = 0;
                     clear buttons
-                    % Get the current position of the mouse
-                    [x, y, buttons] = GetMouse(window);
                     
-                    % Center the rectangle on the centre of the screen
-                    
-                    % See if the mouse cursor is inside the square
-                    opts1 = IsInRect(x, y, allRects(:,1));
-                    opts2 = IsInRect(x, y, allRects(:,2));
-                    opts3 = IsInRect(x, y, allRects(:,3));
-                    opts4 = IsInRect(x, y, allRects(:,4));
-                    
-                    if opts1 == 1
-                        
-                        opts1_colour = onSquare;
-                    else
-                        
-                        opts1_colour = offSquare;
-                    end
-                    
-                    if opts2 == 1
-                        
-                        opts2_colour = onSquare;
-                    else
-                        
-                        opts2_colour = offSquare;
-                    end
-                    
-                    if opts3 == 1
-                        
-                        opts3_colour = onSquare;
-                    else
-                        
-                        opts3_colour = offSquare;
-                    end
-                    
-                    if opts4 == 1
-                        
-                        opts4_colour = onSquare;
-                    else
-                        
-                        opts4_colour = offSquare;
-                    end
-                    
-                    
-                    
-                    Screen('FillRect', window, allColors, allRects)
-                    
-                    
-                    DrawFormattedText(window, questions{q}, 'center', yCenter-200, white, 80, [], [], 2);
-                    DrawFormattedText(window, num2str(timeRemaining),screenXpixels - 100, 100,white,80,[],[],2);
-                    
-                    
-                    
-                    if devMode == 1
-                        if thisCorrect == 1
-                            opts1_colour = [0 maxValue 0];
-                        elseif thisCorrect == 2
-                            opts2_colour = [0 maxValue 0];
-                        elseif thisCorrect == 3
-                            opts3_colour = [0 maxValue 0];
-                        elseif thisCorrect == 4
-                            opts4_colour = [0 maxValue 0];
-                        end
-                    end
-                    
-                    DrawFormattedText(window, thisAnswers{thisOrder(1)}, (sum(allRects([1 3],1))/2) - diff(textboundsleft([1,3]))/2, (sum(allRects([2 4],1))/2) + (diff(textboundsleft([2,4]))/4) , opts1_colour);
-                    DrawFormattedText(window, thisAnswers{thisOrder(2)}, (sum(allRects([1 3],2))/2) - diff(textboundscentre([1,3]))/2, (sum(allRects([2 4],2))/2) + (diff(textboundscentre([2,4]))/4) , opts2_colour);
-                    DrawFormattedText(window, thisAnswers{thisOrder(3)}, (sum(allRects([1 3],3))/2) - diff(textboundsright([1,3]))/2, (sum(allRects([2 4],3))/2) + (diff(textboundsright([2,4]))/4) , opts3_colour);
-                    DrawFormattedText(window, thisAnswers{thisOrder(4)}, (sum(allRects([1 3],4))/2) - diff(textboundsright([1,3]))/2, (sum(allRects([2 4],4))/2) + (diff(textboundsright([2,4]))/4) , opts4_colour);
-                    % Draw a white dot where the mouse is
-                    Screen('DrawDots', window, [x y], 10, white, [], 2);
-                    
-                    % Flip to the screen
-                    vbl  = Screen('Flip', window, vbl + (waitframes - 0.5) * ifi);
-                    
-                    
-                    if timeRemaining == 0
-                        correct(q,1) = 0;
-                        incorrectByLevel(level(q),1) = incorrectByLevel(level(q),1) + 1;
-                        thisResponse = [opts1 opts2 opts3 opts4];
-                        responded = 1;
-                        opts1 = 0;
-                        opts3 = 0;
-                        opts2= 0;
-                        opts4 = 0;
-                        clear buttons
-                        
-                        
-                    end
-                    
-                    
-                    if any(buttons) == 1 && (opts1 ==1||opts3==1||opts2==1||opts4==1)
-                        
-                        thisResponse = [opts1 opts2 opts3 opts4];
-                        responses(q,:) = thisResponse;
-                        
-                        if find(responses(q,:))== thisCorrect
-                            correct(q,1) = 1;
-                        else
-                            correct(q,1) = 0;
-                            incorrectByLevel(level(q),1) = incorrectByLevel(level(q),1) + 1;
-                        end
-                        responded = 1;
-                        opts1 = 0;
-                        opts3 = 0;
-                        opts2= 0;
-                        opts4 = 0;
-                        clear buttons
-                        
-                    end
-                    
-                    
-                    if incorrectByLevel(level(q),1) >=2
-                        error('two wrong on same level') %q = length(questions) + 1;
-                    end
-                    
-                    if q >= 2
-                        if level(q) >= 2
-                            if (incorrectByLevel(level(q),:) + incorrectByLevel(level(q)-1,:)) >= 2
-                                error('wrong on consectuvive levels') %q = length(questions) + 1;
-                                
-                            end
-                            
-                        end
-                    end
                     
                 end
                 
-                responseStruct(q).question = thisQuestion;
-                responseStruct(q).response = thisResponse;
-                responseStruct(q).correctResponse = thisCorrect;
-                responseStruct(q).answers = thisAnswers;
-                responseStruct(q).order = thisOrder;
-                responseStruct(q).correct = correct(q);
                 
-                responded = 0;
-                WaitSecs(.5)
-                questionStart = GetSecs;
+                if any(buttons) == 1 && (opts1 ==1||opts3==1||opts2==1||opts4==1)
+                    
+                    thisResponse = [opts1 opts2 opts3 opts4];
+                    responses(q,:) = thisResponse;
+                    
+                    if find(responses(q,:))== thisCorrect
+                        correct(q,1) = 1;
+                    else
+                        correct(q,1) = 0;
+                        incorrectByLevel(level(q),1) = incorrectByLevel(level(q),1) + 1;
+                    end
+                    responded = 1;
+                    opts1 = 0;
+                    opts3 = 0;
+                    opts2= 0;
+                    opts4 = 0;
+                    clear buttons
+                    
+                end
+                
+                
+                if incorrectByLevel(level(q),1) >=2
+                    q = length(questions); %q = length(questions) + 1;
+                end
+                
+                if q >= 2
+                    if level(q) >= 2
+                        if (incorrectByLevel(level(q),:) + incorrectByLevel(level(q)-1,:)) >= 2
+                            
+                            q = length(questions);
+                            
+                        end
+                        
+                    end
+                end
+                
             end
-        catch ME
-            sca
+            
+            responseStruct(q).question = thisQuestion;
+            responseStruct(q).response = thisResponse;
+            responseStruct(q).correctResponse = thisCorrect;
+            responseStruct(q).answers = thisAnswers;
+            responseStruct(q).order = thisOrder;
+            responseStruct(q).correct = correct(q);
+            
+            responded = 0;
+            WaitSecs(.5)
+            questionStart = GetSecs;
+            q = q + 1;
         end
-        sca
+
         
         score = sum(correct);
         
         
         
         
-        
     end
-
-
 end
+
+
+
 
 
 % general helper functions
