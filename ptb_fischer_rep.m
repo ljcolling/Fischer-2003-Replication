@@ -111,8 +111,8 @@ try
     %----------------------------------------------------------------------
     %       Pre-experiment setup
     %----------------------------------------------------------------------
-    tooQuickText = 'Too quick!\n\nPlease wait until the target appears in a box before pressing SPACE.';
-    tooSlowText = 'Too slow!\n\nPlease press SPACE as soon as the target appears.';
+    tooQuickText = 'Too quick!\n\nPlease wait until the target appears in a box before pressing SPACE.'; % <--TRANSLATION
+    tooSlowText = 'Too slow!\n\nPlease press SPACE as soon as the target appears.'; % <--TRANSLATION
     
     clc
     disp(['Please ensure that the participant is placed EXACTLY ' ...
@@ -308,7 +308,7 @@ try
             disp('reached the end of the block')
             % pause at the end of a block!
             Screen('TextSize',window,24);
-            DrawFormattedText(window, 'You have reached the end of the block. You can take a break if you want.  Press SPACE to continue', 'center', 'center', [1 1 1], 40, [], [], 2);
+            DrawFormattedText(window, 'You have reached the end of the block. You can take a break if you want.  Press SPACE to continue',  'center', 'center', [1 1 1], 40, [], [], 2); % <--TRANSLATION
             Screen('Flip', window);
             KbQueueStart(device);
             startCount = GetSecs;
@@ -625,7 +625,7 @@ try
     
     
     Screen('TextSize',window,24);
-    DrawFormattedText(window, 'The experiment is finished.\nPlease alert the experimenter before proceeding\nPress SPACE to continue', 'center', 'center', [1 1 1], 90,[],[],2);
+    DrawFormattedText(window, 'The experiment is finished.\nPlease alert the experimenter before proceeding\nPress SPACE to continue', 'center', 'center', [1 1 1], 90,[],[],2); 
     Screen('Flip', window);
     presstogo
     ShowCursor;
@@ -738,7 +738,7 @@ end
         DrawFormattedText(window, ['\nYour task is to press [space] as soon as you see a white circle appear in either the left or the right box on the screen.'...
             '\n\nPlease try to keep your eyes fixed on the white spot in the middle of the screen and try not to move your eyes around.'...
             '\nAn example of the white spot and the boxes is shown on screen'...
-            '\nPress [SPACE] one you understand the instructions.'], 'center', 0, [1 1 1], 80,[],[],2);
+            '\nPress [SPACE] one you understand the instructions.'], 'center', 0, [1 1 1], 80,[],[],2); % <--TRANSLATION
         
         
         Screen('DrawDots', window, [xCenter; yCenter], fixationDiameterPix, white, [], 2);
@@ -748,7 +748,7 @@ end
         presstogo
         
         DrawFormattedText(window,['Before the target appears you will see a number that appears in the same place as the white spot. This number is not relavent to your task and it won''t help you predict when and where the target will appear.'...
-            '\n\nFeel free to take breaks when prompted. \n\n\nWhen you are done with the experiment please inform the experimenter.\n Press [SPACE] to start'], 'center','center',[1 1 1],80,[],[],2);
+            '\n\nFeel free to take breaks when prompted. \n\n\nWhen you are done with the experiment please inform the experimenter.\n Press [SPACE] to start'], 'center','center',[1 1 1],80,[],[],2); % <--TRANSLATION
         
         Screen('Flip', window);
         presstogo
@@ -793,8 +793,8 @@ end
         save([workspaceData.thePath 'errorlog.dat'],'workspaceData','-mat');
         
         
-        disp('There was an error! Check above for any warnings messages');
-        disp('If you do not know what went wrong then try running the code again');
+        disp('There was an error! Check above for any warnings messages'); 
+        disp('If you do not know what went wrong then try running the code again'); 
         disp('If the problem persists please email the file: errorlog.dat to: lincoln@colling.net.nz');
         
     end
@@ -811,14 +811,14 @@ end
             'When buttering bread, which hand holds the knife?';...
             'In which hand do you hold a hammer?';...
             'In which hand do you hold the peeler when peeling an apple?';...
-            'Which hand do you use to draw?'};
+            'Which hand do you use to draw?'}; % <--TRANSLATION
         
         
         
         
         
         Screen('TextSize',window,24);
-        DrawFormattedText(window, ['The ten questions that follow ask which hand you prefer to use in a number of different situations. Please click one box for each question, indicating whether you prefer to use the left-hand, either-hand, or the right-hand for that task. Only tick the EITHER box if one hand is truly no better than the other. Please answer all questions, and even if you have had little experience in a particular task, try imagining doing that task and select a response. Press [SPACE] to start.'], 'center', 'center', [1 1 1], 65,[],[],2);
+        DrawFormattedText(window, ['The ten questions that follow ask which hand you prefer to use in a number of different situations. Please click one box for each question, indicating whether you prefer to use the left-hand, either-hand, or the right-hand for that task. Only tick the EITHER box if one hand is truly no better than the other. Please answer all questions, and even if you have had little experience in a particular task, try imagining doing that task and select a response. Press [SPACE] to start.'], 'center', 'center', [1 1 1], 65,[],[],2); % <--TRANSLATION
         Screen('Flip', window);
         presstogo
         
@@ -950,7 +950,7 @@ end
         disp('3. Any combination of the above')
         disp(' ')
         disp(' ')
-        lang = input('Select 1 to 3: ');
+        lang = input('Select 1 to 3: '); % <--TRANSLATION
         
         
         
@@ -1034,7 +1034,7 @@ end
         
         
         Screen('TextSize',window,24);
-        DrawFormattedText(window, ['You will be presented with a few maths problems. Use the mouse to click on the correct answer. You have 30 seconds to answer each problem, so keep an eye on the timer in the corner. Only give your answer when you are sure.\nPress [SPACE] to start.'], 'center', 'center', white, 70,[],[],2);
+        DrawFormattedText(window, ['You will be presented with a few maths problems. Use the mouse to click on the correct answer. You have 30 seconds to answer each problem, so keep an eye on the timer in the corner. Only give your answer when you are sure.\nPress [SPACE] to start.'], 'center', 'center', white, 70,[],[],2); % <--TRANSLATION
         Screen('Flip', window);
         presstogo
         
@@ -1265,14 +1265,14 @@ function aMAS = GetAMAS
             'Listening to a lecture in math class.';...
             'Listening to another student explain a math formula.';...
             'Being given a "pop" quiz in math class.';...
-            'Starting a new chapter in a math book.'};
+            'Starting a new chapter in a math book.'}; % <--TRANSLATION
         
         
         
         
         
         Screen('TextSize',window,24);
-        DrawFormattedText(window, ['Please rate each item below in terms of how anxious you would feel during the event specified. Press [SPACE] to start.'], 'center', 'center', [1 1 1], 65,[],[],2);
+        DrawFormattedText(window, ['Please rate each item below in terms of how anxious you would feel during the event specified. Press [SPACE] to start.'], 'center', 'center', [1 1 1], 65,[],[],2); % <--TRANSLATION
         Screen('Flip', window);
         presstogo
         
@@ -1385,11 +1385,11 @@ function aMAS = GetAMAS
             DrawFormattedText(window, questions{q}, 'center', yCenter-300, [1 1 1], 70, [], [], 2);
             
             
-            DrawFormattedText(window, '1 (low anxiety)', (sum(allRects([1 3],1))/2) - diff(textbound1([1,3]))/2, (sum(allRects([2 4],1))/2) + (diff(textbound1([2,4]))/4) , white);
+            DrawFormattedText(window, '1 (low anxiety)', (sum(allRects([1 3],1))/2) - diff(textbound1([1,3]))/2, (sum(allRects([2 4],1))/2) + (diff(textbound1([2,4]))/4) , white); % <--TRANSLATION
             DrawFormattedText(window, '2', (sum(allRects([1 3],2))/2) - diff(textbound2([1,3]))/2, (sum(allRects([2 4],2))/2) + (diff(textbound2([2,4]))/4) , white);
             DrawFormattedText(window, '3', (sum(allRects([1 3],3))/2) - diff(textbound3([1,3]))/2, (sum(allRects([2 4],3))/2) + (diff(textbound3([2,4]))/4) , white);
             DrawFormattedText(window, '4', (sum(allRects([1 3],4))/2) - diff(textbound4([1,3]))/2, (sum(allRects([2 4],4))/2) + (diff(textbound4([2,4]))/4) , white);
-            DrawFormattedText(window, '5 (high anxiety)', (sum(allRects([1 3],5))/2) - diff(textbound5([1,3]))/2, (sum(allRects([2 4],5))/2) + (diff(textbound5([2,4]))/4) , white);
+            DrawFormattedText(window, '5 (high anxiety)', (sum(allRects([1 3],5))/2) - diff(textbound5([1,3]))/2, (sum(allRects([2 4],5))/2) + (diff(textbound5([2,4]))/4) , white); % <--TRANSLATION
 
             % Draw a white dot where the mouse is
             Screen('DrawDots', window, [x y], 10, white, [], 2);
