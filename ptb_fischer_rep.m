@@ -1466,7 +1466,7 @@ function aMAS = GetAMAS
             DrawFormattedText(window, questions{q}, 'center', yCenter-300, [1 1 1], 70, [], [], 2);
             
             
-            DrawFormattedText(window, ['5 (' lowanxiety ')'], (sum(allRects([1 3],1))/2) - diff(textbound1([1,3]))/2, (sum(allRects([2 4],1))/2) + (diff(textbound1([2,4]))/4) , white);
+            DrawFormattedText(window, ['1 (' lowanxiety ')'], (sum(allRects([1 3],1))/2) - diff(textbound1([1,3]))/2, (sum(allRects([2 4],1))/2) + (diff(textbound1([2,4]))/4) , white);
             DrawFormattedText(window, '2', (sum(allRects([1 3],2))/2) - diff(textbound2([1,3]))/2, (sum(allRects([2 4],2))/2) + (diff(textbound2([2,4]))/4) , white);
             DrawFormattedText(window, '3', (sum(allRects([1 3],3))/2) - diff(textbound3([1,3]))/2, (sum(allRects([2 4],3))/2) + (diff(textbound3([2,4]))/4) , white);
             DrawFormattedText(window, '4', (sum(allRects([1 3],4))/2) - diff(textbound4([1,3]))/2, (sum(allRects([2 4],4))/2) + (diff(textbound4([2,4]))/4) , white);
