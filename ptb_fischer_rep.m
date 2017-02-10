@@ -1,5 +1,5 @@
 function PTB_Fischer()
-codeVersion = '1.0';
+codeVersion = '1.0-nl';
 
 % --- DO NOT CHANGE -- %
 skipVercheck = 0; % 1 = check matlab and octave versions
@@ -7,6 +7,7 @@ skipSyncTests = 0; % 1 = skip video sync tests. ALWAYS set to 0
 devMode = 0; % set development flag
 % --- END --- %
 
+LANGUAGE = 'dutch';
 
 global ME
 
@@ -111,9 +112,14 @@ try
     %----------------------------------------------------------------------
     %       Pre-experiment setup
     %----------------------------------------------------------------------
-    tooQuickText = 'Too quick!\n\nPlease wait until the target appears in a box before pressing SPACE.'; % <--TRANSLATION
-    tooSlowText = 'Too slow!\n\nPlease press SPACE as soon as the target appears.'; % <--TRANSLATION
-    
+    if LANGUAGE == 'dutch'
+	    tooQuickText = 'Te snel!\n\nWacht alstublieft tot de target in een box verschijnt voor dat je op SPATIE drukt.'; 
+    	tooSlowText = 'Te langzaam!\n\nDruk alstublieft zo snel mogelijk op SPATIE als de target verschijnt.';
+	else
+		tooQuickText = 'Too quick!\n\nPlease wait until the target appears in a box before pressing SPACE.'; 
+	    tooSlowText = 'Too slow!\n\nPlease press SPACE as soon as the target appears.';
+	end
+
     clc
     disp(['Please ensure that the participant is placed EXACTLY ' ...
         num2str(params.viewingDistance) 'cm away from the monitor']);
@@ -308,7 +314,12 @@ try
             disp('reached the end of the block')
             % pause at the end of a block!
             Screen('TextSize',window,24);
-            DrawFormattedText(window, 'You have reached the end of the block. You can take a break if you want.  Press SPACE to continue',  'center', 'center', [1 1 1], 40, [], [], 2); % <--TRANSLATION
+            if LANGUAGE == 'dutch'
+				txt = 'Dit is het einde van het blok, je kunt een pauze nemen als je dat wilt. Druk op SPATIE om door te gaan'
+			else
+				txt = 'You have reached the end of the block. You can take a break if you want. Press SPACE to continue'
+			end
+			DrawFormattedText(window, txt,  'center', 'center', [1 1 1], 40, [], [], 2); 
             Screen('Flip', window);
             KbQueueStart(device);
             startCount = GetSecs;
@@ -625,7 +636,12 @@ try
     
     
     Screen('TextSize',window,24);
-    DrawFormattedText(window, 'The experiment is finished.\nPlease alert the experimenter before proceeding\nPress SPACE to continue', 'center', 'center', [1 1 1], 90,[],[],2); 
+	if LANGUAGE == 'dutch'
+		txt = 'Het experiment is afgelopen.\nLicht alstublieft de onderzoeker in voordat je verder gaat.\nDruk op SPATIE om door te gaan.'
+	else
+		txt = 'The experiment is finished.\nPlease alert the experimenter before proceeding\nPress SPACE to continue'
+	end
+    DrawFormattedText(window, txt, 'center', 'center', [1 1 1], 90,[],[],2); 
     Screen('Flip', window);
     presstogo
     ShowCursor;
@@ -735,10 +751,18 @@ end
         screenparams
         
         Screen('TextSize',window,24);
-        DrawFormattedText(window, ['\nYour task is to press [space] as soon as you see a white circle appear in either the left or the right box on the screen.'...
+		if LANGUAGE == 'dutch'
+			txt = ['\nJe taak is om zo snel mogelijk te drukken [spatie] als je een witte cirkel ziet verschijnen in of de linker of de rechter box op het scherm.'...
+            '\n\nHou alsjeblieft je ogen op het midden van het scherm gericht en probeer niet je ogen rond te bewegen.'...
+            '\n'... % TODO translation could be improved
+            '\nDruk [spatie] om te beginnen.']
+		else
+			txt = ['\nYour task is to press [space] as soon as you see a white circle appear in either the left or the right box on the screen.'...
             '\n\nPlease try to keep your eyes fixed on the white spot in the middle of the screen and try not to move your eyes around.'...
             '\nAn example of the white spot and the boxes is shown on screen'...
-            '\nPress [SPACE] one you understand the instructions.'], 'center', 0, [1 1 1], 80,[],[],2); % <--TRANSLATION
+            '\nPress [SPACE] one you understand the instructions.']
+		end
+        DrawFormattedText(window, txt, 'center', 0, [1 1 1], 80,[],[],2); 
         
         
         Screen('DrawDots', window, [xCenter; yCenter], fixationDiameterPix, white, [], 2);
@@ -747,8 +771,15 @@ end
         Screen('Flip', window);
         presstogo
         
-        DrawFormattedText(window,['Before the target appears you will see a number that appears in the same place as the white spot. This number is not relavent to your task and it won''t help you predict when and where the target will appear.'...
-            '\n\nFeel free to take breaks when prompted. \n\n\nWhen you are done with the experiment please inform the experimenter.\n Press [SPACE] to start'], 'center','center',[1 1 1],80,[],[],2); % <--TRANSLATION
+		if LANGUAGE == 'dutch'
+			txt = ['Je zult ook een getal zien dat op dezelfde plaats als het fixatiepunt verschijnt. Dit is niet relevant voor de taak en zal niet helpen om te voorspellen waar en wanneer de target verschijnt.' ...
+			'\n\nNeem gerust pauze als je daar een melding voor krijgt.\n\nLicht de experimentator in als je klaar bent.\nDruk [spatie] om te beginnen.']
+			% TODO not perfect translation
+		else
+			txt = ['Before the target appears you will see a number that appears in the same place as the white spot. This number is not relavent to your task and it won''t help you predict when and where the target will appear.'...
+            '\n\nFeel free to take breaks when prompted. \n\n\nWhen you are done with the experiment please inform the experimenter.\n Press [SPACE] to start']
+		end
+		DrawFormattedText(window, txt, 'center','center',[1 1 1],80,[],[],2);
         
         Screen('Flip', window);
         presstogo
@@ -802,7 +833,20 @@ end
     function handed = getHandedness
         
        
-        questions ={'With which hand do you write?';...
+        if LANGUAGE == 'dutch'
+			questions ={'Met welke hand schrijf je?';...
+            'In welke hand hou je het liefst een lepel vast als je eet?';...
+            'In welke hand heb je het liefst je tandenborstel vast tijdens het tandenpoetsen?';...
+            'In welke hand hou je de lucifer als je deze strijkt?';...
+            'In welke hand hou je de gum als je een potlood streep weg wilt gummen?';...
+            'In welke hand hou je de naald als je gaat naaien?';...
+            'Als je brood smeert, met welke hand hou je dan het mes vast?';...
+            'In welke hand hou je een hamer vast?';...
+            'In welke hand hou je de schiller als je een appel schilt?';...
+            'Welke hand gebruik je om te tekenen?'};
+		
+		else
+			questions ={'With which hand do you write?';...
             'In which hand do you prefer to use a spoon when eating?';...
             'In which hand do you prefer to hold a toothbrush when cleaning your teeth?';...
             'In which hand do you hold a match when you strike it?';...
@@ -811,14 +855,19 @@ end
             'When buttering bread, which hand holds the knife?';...
             'In which hand do you hold a hammer?';...
             'In which hand do you hold the peeler when peeling an apple?';...
-            'Which hand do you use to draw?'}; % <--TRANSLATION
-        
+            'Which hand do you use to draw?'};
+        end
         
         
         
         
         Screen('TextSize',window,24);
-        DrawFormattedText(window, ['The ten questions that follow ask which hand you prefer to use in a number of different situations. Please click one box for each question, indicating whether you prefer to use the left-hand, either-hand, or the right-hand for that task. Only tick the EITHER box if one hand is truly no better than the other. Please answer all questions, and even if you have had little experience in a particular task, try imagining doing that task and select a response. Press [SPACE] to start.'], 'center', 'center', [1 1 1], 65,[],[],2); % <--TRANSLATION
+		if LANGUAGE == 'dutch'
+			txt = ['De volgende tien vragen zullen vragen welke hand je prefereert om te gebruiken in een reeks van verschillende situaties. Klik alstublieft op een box voor iedere vraag om aan te geven of je de linkerhand gebruikt, geen voorkeur hebt, of de rechterhand gebruikt voor die taak. Klik alleen op de GEEN VOORKEUR box als beide handen echt even goed zijn voor deze taak. Beantwoord alstublieft elke vraag, als je weinig ervaring hebt met een bepaalde taak probeer het je dan voor te stellen en geef dan je antwoord.']
+		else
+			txt = ['The ten questions that follow ask which hand you prefer to use in a number of different situations. Please click one box for each question, indicating whether you prefer to use the left-hand, either-hand, or the right-hand for that task. Only tick the EITHER box if one hand is truly no better than the other. Please answer all questions, and even if you have had little experience in a particular task, try imagining doing that task and select a response. Press [SPACE] to start.']
+		end
+        DrawFormattedText(window, txt, 'center', 'center', [1 1 1], 65,[],[],2);
         Screen('Flip', window);
         presstogo
         
@@ -940,17 +989,28 @@ end
 %%% change language details.
     function lang = getLanguageDetails
         clc
-        disp('We would like to know a few details about the languages you read and write.')
-        disp('Do you read or write any languages where the LETTERS and NUMBERS are written:')
+        if LANGUAGE == 'dutch'
+			disp('We zouden graag wat details willen weten over de talen die je leest en schrijft.')
+    	    disp('Lees of schrijf je talen waarin de LETTERS en GETALLEN geschreven worden:')
+        	disp(' ')
+	        disp('1. EXCLUSIEF van links naar rechts (zoals, Engels, Nederlands, Duits)')
+    	    disp(' ')
+	        disp('2. NIET EXCLUSIEF van links naar rechts (zoals, Arabisch, Hebreeuws, Urdu)')
+	        disp(' ')
+	        disp('3. Een combinatie van de bovenstaande')
+    	else
+			disp('We would like to know a few details about the languages you read and write.')
+    	    disp('Do you read or write any languages where the LETTERS and NUMBERS are written:')
+        	disp(' ')
+	        disp('1. EXCLUSIVELY from left to right (e.g., English, Dutch, German)')
+    	    disp(' ')
+	        disp('2. NOT EXCLUSIVELY left to right (e.g., Arabic, Hebrew, Urdu)')
+	        disp(' ')
+	        disp('3. Any combination of the above')
+		end
+		disp(' ')
         disp(' ')
-        disp('1. EXCLUSIVELY from left to right (e.g., English, Dutch, German)')
-        disp(' ')
-        disp('2. NOT EXCLUSIVELY left to right (e.g., Arabic, Hebrew, Urdu)')
-        disp(' ')
-        disp('3. Any combination of the above')
-        disp(' ')
-        disp(' ')
-        lang = input('Select 1 to 3: '); % <--TRANSLATION
+        lang = input('1, 2, 3? ');
         
         
         
@@ -1034,7 +1094,13 @@ end
         
         
         Screen('TextSize',window,24);
-        DrawFormattedText(window, ['You will be presented with a few maths problems. Use the mouse to click on the correct answer. You have 30 seconds to answer each problem, so keep an eye on the timer in the corner. Only give your answer when you are sure.\nPress [SPACE] to start.'], 'center', 'center', white, 70,[],[],2); % <--TRANSLATION
+		if LANGUAGE == 'dutch'
+			txt = ['Je zult een aantal wiskunde vraagstukken te zien krijgen. Gebruik de muis om het juiste antwoord te klikken. Je hebt 30 seconde voor elke opgave, hou daarom de tijd in de gaten. Geef alleen antwoord als je zeker van je antwoord bent.\nDruk [SPATIE] om te beginnen.']
+		else
+			txt =  ['You will be presented with a few maths problems. Use the mouse to click on the correct answer. You have 30 seconds to answer each problem, so keep an eye on the timer in the corner. Only give your answer when you are sure.\nPress [SPACE] to start.']
+		end
+
+        DrawFormattedText(window, txt, 'center', 'center', white, 70,[],[],2);
         Screen('Flip', window);
         presstogo
         
@@ -1257,7 +1323,21 @@ end
 function aMAS = GetAMAS
         
        
-        questions ={'Having to use the tables in the back of a math book.';...
+		if LANGUAGE == 'dutch'
+			questions ={'Gebruik moeten maken van de tabellen achterin het wiskundeboek.';...
+			'Denken aan een wiskundetest een dag voor de test.';...
+			'Kijken naar een docent die een algebraïsche vergelijking op het bord schrijft. ';...
+			'Een examen maken van een wiskundecursus.';...
+			'Huiswerk krijgen van veel lastige problemen dat volgende week bij de les ingeleverd moet worden';...
+			'Luisteren naar een hoorcollege in wiskunde';...
+			'Luisteren naar een andere student die een wiskundige formule uitlegt.';...
+			'Een onverwachte toets krijgen tijdens wiskunde.';...
+			'Een nieuw hoofdstuk beginnen in het wiskundeboek  '};
+			lowanxiety = 'Weinig Angst '
+			highanxiety = 'Veel Angst'
+   			txt = ['Noteer alstublieft bij iedere beschrijving hieronder hoe angstig je ervan wordt. Druk [SPATIE] om te beginnen.']
+     else
+	        questions ={'Having to use the tables in the back of a math book.';...
             'Thinking about an upcoming math test 1 day before.';...
             'Watching a teacher work an algebraic equation on the blackboard.';...
             'Taking an examination in a math course.';...
@@ -1265,14 +1345,15 @@ function aMAS = GetAMAS
             'Listening to a lecture in math class.';...
             'Listening to another student explain a math formula.';...
             'Being given a "pop" quiz in math class.';...
-            'Starting a new chapter in a math book.'}; % <--TRANSLATION
-        
-        
-        
-        
-        
+            'Starting a new chapter in a math book.'};
+			lowanxiety = 'Low Anxiety'
+			highanxiety = 'High Anxiety'
+			txt = ['Please rate each item below in terms of how anxious you would feel during the event specified. Press [SPACE] to start.']
+		end
+     
+
         Screen('TextSize',window,24);
-        DrawFormattedText(window, ['Please rate each item below in terms of how anxious you would feel during the event specified. Press [SPACE] to start.'], 'center', 'center', [1 1 1], 65,[],[],2); % <--TRANSLATION
+        DrawFormattedText(window, txt, 'center', 'center', [1 1 1], 65,[],[],2);
         Screen('Flip', window);
         presstogo
         
@@ -1320,11 +1401,11 @@ function aMAS = GetAMAS
         buttons = 0;
         Screen('TextFont', window, 'Ariel');
         Screen('TextSize', window, 30);
-        [~, ~, textbound1] = DrawFormattedText(window, '1 (low anxiety)', sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
+        [~, ~, textbound1] = DrawFormattedText(window, ['1 (' lowanxiety ')'], sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
         [~, ~, textbound2] = DrawFormattedText(window, '2', sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
         [~, ~, textbound3] = DrawFormattedText(window, '3', sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
         [~, ~, textbound4] = DrawFormattedText(window, '4', sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
-        [~, ~, textbound5] = DrawFormattedText(window, '5 (high anxiety)', sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
+        [~, ~, textbound5] = DrawFormattedText(window, ['5 (' highanxiety ')'], sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
         
         q = 1;
         buttons = 0;
@@ -1385,11 +1466,11 @@ function aMAS = GetAMAS
             DrawFormattedText(window, questions{q}, 'center', yCenter-300, [1 1 1], 70, [], [], 2);
             
             
-            DrawFormattedText(window, '1 (low anxiety)', (sum(allRects([1 3],1))/2) - diff(textbound1([1,3]))/2, (sum(allRects([2 4],1))/2) + (diff(textbound1([2,4]))/4) , white); % <--TRANSLATION
+            DrawFormattedText(window, ['5 (' lowanxiety ')'], (sum(allRects([1 3],1))/2) - diff(textbound1([1,3]))/2, (sum(allRects([2 4],1))/2) + (diff(textbound1([2,4]))/4) , white);
             DrawFormattedText(window, '2', (sum(allRects([1 3],2))/2) - diff(textbound2([1,3]))/2, (sum(allRects([2 4],2))/2) + (diff(textbound2([2,4]))/4) , white);
             DrawFormattedText(window, '3', (sum(allRects([1 3],3))/2) - diff(textbound3([1,3]))/2, (sum(allRects([2 4],3))/2) + (diff(textbound3([2,4]))/4) , white);
             DrawFormattedText(window, '4', (sum(allRects([1 3],4))/2) - diff(textbound4([1,3]))/2, (sum(allRects([2 4],4))/2) + (diff(textbound4([2,4]))/4) , white);
-            DrawFormattedText(window, '5 (high anxiety)', (sum(allRects([1 3],5))/2) - diff(textbound5([1,3]))/2, (sum(allRects([2 4],5))/2) + (diff(textbound5([2,4]))/4) , white); % <--TRANSLATION
+            DrawFormattedText(window, ['5 (' highanxiety ')'], (sum(allRects([1 3],5))/2) - diff(textbound5([1,3]))/2, (sum(allRects([2 4],5))/2) + (diff(textbound5([2,4]))/4) , white);
 
             % Draw a white dot where the mouse is
             Screen('DrawDots', window, [x y], 10, white, [], 2);
