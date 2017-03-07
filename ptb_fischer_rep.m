@@ -113,8 +113,8 @@ try
     %       Pre-experiment setup
     %----------------------------------------------------------------------
     if LANGUAGE == 'dutch'
-        tooQuickText = 'Te snel!\n\nWacht alstublieft tot de target in een box verschijnt voor dat je op SPATIE drukt.'; 
-        tooSlowText = 'Te langzaam!\n\nDruk alstublieft zo snel mogelijk op SPATIE als de target verschijnt.';
+        tooQuickText = 'Te snel!\n\nWacht alsjeblieft tot de target in een box verschijnt voor dat je op SPATIE drukt.'; 
+        tooSlowText = 'Te langzaam!\n\nDruk alsjeblieft zo snel mogelijk op SPATIE als de target verschijnt.';
     else
         tooQuickText = 'Too quick!\n\nPlease wait until the target appears in a box before pressing SPACE.'; 
         tooSlowText = 'Too slow!\n\nPlease press SPACE as soon as the target appears.';
@@ -637,7 +637,7 @@ try
     
     Screen('TextSize',window,24);
     if LANGUAGE == 'dutch'
-        txt = 'Het experiment is afgelopen.\nLicht alstublieft de onderzoeker in voordat je verder gaat.\nDruk op SPATIE om door te gaan.'
+        txt = 'Het experiment is afgelopen.\nLaat dit de proefleider even weten voordat je verder gaat.\nDruk op SPATIE om door te gaan.'
     else
         txt = 'The experiment is finished.\nPlease alert the experimenter before proceeding\nPress SPACE to continue'
     end
@@ -1095,7 +1095,7 @@ end
         
         Screen('TextSize',window,24);
         if LANGUAGE == 'dutch'
-            txt = ['Je zult een aantal wiskunde vraagstukken te zien krijgen. Gebruik de muis om het juiste antwoord te klikken. Je hebt 30 seconde voor elke opgave, hou daarom de tijd in de gaten. Geef alleen antwoord als je zeker van je antwoord bent.\nDruk [SPATIE] om te beginnen.']
+            txt = ['Je zult een aantal wiskundeopgaven te zien krijgen. Gebruik de muis om het juiste antwoord te klikken. Je hebt 30 seconde voor elke opgave, hou daarom de tijd in de gaten. Geef alleen antwoord als je zeker van je antwoord bent.\nDruk [SPATIE] om te beginnen.']
         else
             txt =  ['You will be presented with a few maths problems. Use the mouse to click on the correct answer. You have 30 seconds to answer each problem, so keep an eye on the timer in the corner. Only give your answer when you are sure.\nPress [SPACE] to start.']
         end
