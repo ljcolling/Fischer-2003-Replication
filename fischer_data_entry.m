@@ -40,28 +40,41 @@ fingers = struct;
 
 for i = [a b c d]
     disp(['For the sentence: ' sentences{i}])
-    fingers(i).LT = input('When was finger LT used (type 1 - 10, or n if it was not used) ','s');
-    fingers(i).LI = input('When was finger LI used (type 1 - 10, or n if it was not used) ','s');
-    fingers(i).LM = input('When was finger LM used (type 1 - 10, or n if it was not used) ','s');
-    fingers(i).LR = input('When was finger LR used (type 1 - 10, or n if it was not used) ','s');
-    fingers(i).LP = input('When was finger LP used (type 1 - 10, or n if it was not used) ','s');
-    fingers(i).RP = input('When was finger RP used (type 1 - 10, or n if it was not used) ','s');
-    fingers(i).RR = input('When was finger RR used (type 1 - 10, or n if it was not used) ','s');
-    fingers(i).RM = input('When was finger RM used (type 1 - 10, or n if it was not used) ','s');
-    fingers(i).RI = input('When was finger RI used (type 1 - 10, or n if it was not used) ','s');
-    fingers(i).RT = input('When was finger RT used (type 1 - 10, or n if it was not used) ','s');
-
-    f = {fingers(i).LT,fingers(i).LI,fingers(i).LM,fingers(i).LR,fingers(i).LP,...
-            fingers(i).RP,fingers(i).RR,fingers(i).RM,fingers(i).RI,fingers(i).RT};
-    if sum(ismember(f,'1')) ~= 1
-        error('You made an error entering the starting fingers! Please start again.');
+    check = 0;
+    while check == 0
+        fingers(i).h1f1 = upper(input('What was the first finger used on the first hand? ','s'));
+        check = sum(ismember({'LT','LI','LM','LR','LP','RP','RR','RM','RI','RT','NA'},fingers(i).h1f1));
+        if check == 0
+            disp('Please use the codes from the sheet')
+        end
     end
-
-    if sum(~ismember(f,'n')) ~= sum(~ismember(unique(f),'n'))
-       error('You have entered the same number for two fingers! Please start again.'); 
+    check = 0;
+        while check == 0
+    fingers(i).h2f1 = upper(input('What was the first finger used on the second hand? (enter na if a second hand wasn''t used) ','s'));
+        check = sum(ismember({'LT','LI','LM','LR','LP','RP','RR','RM','RI','RT','NA'},fingers(i).h2f1));
+        if check == 0
+            disp('Please use the codes from the sheet (or NA if they only used one hand')
+        end
     end
+    check = 0;
+   
+    %fingers(i).h2f1 = upper(input('What was the first finger used on the second hand? (enter na if a second hand wasn''t used) ','s'));
+    
+    
+    
+    
+   % f = {fingers(i).LT,fingers(i).LI,fingers(i).LM,fingers(i).LR,fingers(i).LP,...
+   %         fingers(i).RP,fingers(i).RR,fingers(i).RM,fingers(i).RI,fingers(i).RT};
+   % if sum(ismember(f,'1')) ~= 1
+   %     error('You made an error entering the starting fingers! Please start again.');
+   % end
+   % if sum(~ismember(f,'n')) ~= sum(~ismember(unique(f),'n'))
+   %    error('You have entered the same number for two fingers! Please start again.'); 
+   % end
     
 end
+
+language = upper(input('What is the participant''s native language? (please give the language name in english) ','s'));
 
 order = [a b c d];
 
