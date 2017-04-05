@@ -43,7 +43,7 @@ for i = [a b c d]
     check = 0;
     while check == 0
         fingers(i).h1f1 = upper(input('What was the first finger used on the first hand? ','s'));
-        check = sum(ismember({'LT','LI','LM','LR','LP','RP','RR','RM','RI','RT'},fingers(i).h1f1));
+        check = sum(ismember({'LT','LI','LM','LR','LP','RP','RR','RM','RI','RT','NA'},fingers(i).h1f1));
         if check == 0
             disp('Please use the codes from the sheet')
         end
