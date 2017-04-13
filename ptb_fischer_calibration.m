@@ -138,7 +138,8 @@ try
         try
             for i = 1 :  100
                 Screen('TextSize',window,i);
-                [nx,ny,bbox] = DrawFormattedText(window, '0', 'center', 'center', [1 1 1]);
+                %[nx,ny,bbox] = DrawFormattedText(window, '0', 'center', 'center', [1 1 1]);
+                bbox = TextCenteredBounds(window,'0');
                 pixelWidth  =  bbox(3) - bbox(1); %x
                 pixelHeight = bbox(4) - bbox(2); %y
                 params.fontSize(i,1) = pixelWidth;

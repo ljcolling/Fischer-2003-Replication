@@ -1251,7 +1251,7 @@ end
                 vbl  = Screen('Flip', window, vbl + (waitframes - 0.5) * ifi);
                 
                 
-                if timeRemaining == 0
+                if timeRemaining <= 0
                     correct(q,1) = 0;
                     incorrectByLevel(level(q),1) = incorrectByLevel(level(q),1) + 1;
                     thisResponse = [opts1 opts2 opts3 opts4];
@@ -1260,7 +1260,7 @@ end
                     opts3 = 0;
                     opts2= 0;
                     opts4 = 0;
-                    clear buttons
+                    buttons = 0;
                     
                     
                 end
