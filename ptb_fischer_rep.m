@@ -1,5 +1,5 @@
 function PTB_Fischer()
-codeVersion = '1.0-nl';
+codeVersion = '1.0-nl-1';
 
 % --- DO NOT CHANGE -- %
 skipVercheck = 1; % 1 = check matlab and octave versions
