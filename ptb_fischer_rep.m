@@ -1,5 +1,5 @@
 function PTB_Fischer()
-codeVersion = '1.0-nl-1';
+codeVersion = '1.0-nl-2';
 
 % --- DO NOT CHANGE -- %
 skipVercheck = 1; % 1 = check matlab and octave versions
@@ -850,7 +850,9 @@ end
             'In welke hand hou je een hamer vast?';...
             'In welke hand hou je de schiller als je een appel schilt?';...
             'Welke hand gebruik je om te tekenen?'};
-        
+            LEFT_TXT = 'LINKS';
+            RIGHT_TXT = 'RECHTS';
+            EITHER_TXT = 'BEIDE';
         else
             questions ={'With which hand do you write?';...
             'In which hand do you prefer to use a spoon when eating?';...
@@ -862,6 +864,10 @@ end
             'In which hand do you hold a hammer?';...
             'In which hand do you hold the peeler when peeling an apple?';...
             'Which hand do you use to draw?'};
+            LEFT_TXT = 'LEFT';
+            RIGHT_TXT = 'RIGHT';
+            EITHER_TXT = 'EITHER';
+
         end
         
         
@@ -869,9 +875,9 @@ end
         
         Screen('TextSize',window,24);
         if LANGUAGE == 'dutch'
-            txt = ['De volgende tien vragen zullen vragen welke hand je prefereert om te gebruiken in een reeks van verschillende situaties. Klik alstublieft op een box voor iedere vraag om aan te geven of je de linkerhand gebruikt, geen voorkeur hebt, of de rechterhand gebruikt voor die taak. Klik alleen op de GEEN VOORKEUR box als beide handen echt even goed zijn voor deze taak. Beantwoord alstublieft elke vraag, als je weinig ervaring hebt met een bepaalde taak probeer het je dan voor te stellen en geef dan je antwoord.']
+            txt = ['De volgende tien vragen zullen vragen welke hand je prefereert om te gebruiken in een reeks van verschillende situaties. Klik alstublieft op een box voor iedere vraag om aan te geven of je de linkerhand gebruikt, geen voorkeur hebt, of de rechterhand gebruikt voor die taak. Klik alleen op de GEEN VOORKEUR box als beide handen echt even goed zijn voor deze taak. Beantwoord alstublieft elke vraag, als je weinig ervaring hebt met een bepaalde taak probeer het je dan voor te stellen en geef dan je antwoord.'];
         else
-            txt = ['The ten questions that follow ask which hand you prefer to use in a number of different situations. Please click one box for each question, indicating whether you prefer to use the left-hand, either-hand, or the right-hand for that task. Only tick the EITHER box if one hand is truly no better than the other. Please answer all questions, and even if you have had little experience in a particular task, try imagining doing that task and select a response. Press [SPACE] to start.']
+            txt = ['The ten questions that follow ask which hand you prefer to use in a number of different situations. Please click one box for each question, indicating whether you prefer to use the left-hand, either-hand, or the right-hand for that task. Only tick the EITHER box if one hand is truly no better than the other. Please answer all questions, and even if you have had little experience in a particular task, try imagining doing that task and select a response. Press [SPACE] to start.'];
         end
         DrawFormattedText(window, txt, 'center', 'center', [1 1 1], 65,[],[],2);
         Screen('Flip', window);
@@ -917,9 +923,9 @@ end
         buttons = 0;
         Screen('TextFont', window, 'Ariel');
         Screen('TextSize', window, 30);
-        [~, ~, textboundsleft] = DrawFormattedText(window, 'LEFT', sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
-        [~, ~, textboundscentre] = DrawFormattedText(window, 'EITHER', sum(allRects([1 3],2))/2, sum(allRects([2 4],2))/2 , white);
-        [~, ~, textboundsright] = DrawFormattedText(window, 'RIGHT', sum(allRects([1 3],3))/2, sum(allRects([2 4],3))/2 , white);
+        [~, ~, textboundsleft] = DrawFormattedText(window, LEFT_TXT, sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white); %
+        [~, ~, textboundscentre] = DrawFormattedText(window, EITHER_TXT, sum(allRects([1 3],2))/2, sum(allRects([2 4],2))/2 , white);
+        [~, ~, textboundsright] = DrawFormattedText(window, RIGHT_TXT, sum(allRects([1 3],3))/2, sum(allRects([2 4],3))/2 , white);
         
         
         
@@ -967,10 +973,9 @@ end
             
             DrawFormattedText(window, questions{q}, 'center', yCenter-300, [1 1 1], 70, [], [], 2);
             
-            
-            DrawFormattedText(window, 'LEFT', (sum(allRects([1 3],1))/2) - diff(textboundsleft([1,3]))/2, (sum(allRects([2 4],1))/2) + (diff(textboundsleft([2,4]))/4) , white);
-            DrawFormattedText(window, 'EITHER', (sum(allRects([1 3],2))/2) - diff(textboundscentre([1,3]))/2, (sum(allRects([2 4],2))/2) + (diff(textboundscentre([2,4]))/4) , white);
-            DrawFormattedText(window, 'RIGHT', (sum(allRects([1 3],3))/2) - diff(textboundsright([1,3]))/2, (sum(allRects([2 4],3))/2) + (diff(textboundsright([2,4]))/4) , white);
+            DrawFormattedText(window, LEFT_TXT, (sum(allRects([1 3],1))/2) - diff(textboundsleft([1,3]))/2, (sum(allRects([2 4],1))/2) + (diff(textboundsleft([2,4]))/4) , white);
+            DrawFormattedText(window, EITHER_TXT, (sum(allRects([1 3],2))/2) - diff(textboundscentre([1,3]))/2, (sum(allRects([2 4],2))/2) + (diff(textboundscentre([2,4]))/4) , white); % translate
+            DrawFormattedText(window, RIGHT_TXT, (sum(allRects([1 3],3))/2) - diff(textboundsright([1,3]))/2, (sum(allRects([2 4],3))/2) + (diff(textboundsright([2,4]))/4) , white);
             % Draw a white dot where the mouse is
             Screen('DrawDots', window, [x y], 10, white, [], 2);
             
@@ -1043,8 +1048,8 @@ end
             '48 - 19';...
             '14 x 6';...
             '2/3 - 1/3';...
-            '126 ÷ 42';...
-            '288 ÷ 48';...
+            '126 ÷ 42';... %TODO: check unicode problem
+            '288 ÷ 48';... %TODO: check unicode problem
             '7/8 - 2/8';...
             '3250 / 25';...
             '2 3/4 + 4 1/8';...
@@ -1101,9 +1106,9 @@ end
         
         Screen('TextSize',window,24);
         if LANGUAGE == 'dutch'
-            txt = ['Je zult een aantal wiskundeopgaven te zien krijgen. Gebruik de muis om het juiste antwoord te klikken. Je hebt 30 seconde voor elke opgave, hou daarom de tijd in de gaten. Geef alleen antwoord als je zeker van je antwoord bent.\nDruk [SPATIE] om te beginnen.']
+            txt = ['Je zult een aantal wiskundeopgaven te zien krijgen. Gebruik de muis om het juiste antwoord te klikken. Je hebt 30 seconde voor elke opgave, hou daarom de tijd in de gaten. Geef alleen antwoord als je zeker van je antwoord bent.\nDruk [SPATIE] om te beginnen.'];
         else
-            txt =  ['You will be presented with a few maths problems. Use the mouse to click on the correct answer. You have 30 seconds to answer each problem, so keep an eye on the timer in the corner. Only give your answer when you are sure.\nPress [SPACE] to start.']
+            txt =  ['You will be presented with a few maths problems. Use the mouse to click on the correct answer. You have 30 seconds to answer each problem, so keep an eye on the timer in the corner. Only give your answer when you are sure.\nPress [SPACE] to start.'];
         end
 
         DrawFormattedText(window, txt, 'center', 'center', white, 70,[],[],2);
@@ -1339,9 +1344,9 @@ function aMAS = GetAMAS
             'Luisteren naar een andere student die een wiskundige formule uitlegt.';...
             'Een onverwachte toets krijgen tijdens wiskunde.';...
             'Een nieuw hoofdstuk beginnen in het wiskundeboek  '};
-            lowanxiety = 'Weinig Angst '
-            highanxiety = 'Veel Angst'
-               txt = ['Noteer alstublieft bij iedere beschrijving hieronder hoe angstig je ervan wordt. Druk [SPATIE] om te beginnen.']
+            LOWANXIETY = 'Weinig Angst ';
+            HIGHANXIETY = 'Veel Angst';
+            txt = ['Noteer alstublieft bij iedere beschrijving hieronder hoe angstig je ervan wordt. Druk [SPATIE] om te beginnen.'];
      else
             questions ={'Having to use the tables in the back of a math book.';...
             'Thinking about an upcoming math test 1 day before.';...
@@ -1352,9 +1357,9 @@ function aMAS = GetAMAS
             'Listening to another student explain a math formula.';...
             'Being given a "pop" quiz in math class.';...
             'Starting a new chapter in a math book.'};
-            lowanxiety = 'Low Anxiety'
-            highanxiety = 'High Anxiety'
-            txt = ['Please rate each item below in terms of how anxious you would feel during the event specified. Press [SPACE] to start.']
+            LOWANXIETY = 'Low Anxiety';
+            HIGHANXIETY = 'High Anxiety';
+            txt = ['Please rate each item below in terms of how anxious you would feel during the event specified. Press [SPACE] to start.'];
         end
      
 
@@ -1407,11 +1412,11 @@ function aMAS = GetAMAS
         buttons = 0;
         Screen('TextFont', window, 'Ariel');
         Screen('TextSize', window, 30);
-        [~, ~, textbound1] = DrawFormattedText(window, ['1 (' lowanxiety ')'], sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
+        [~, ~, textbound1] = DrawFormattedText(window, ['1 (' LOWANXIETY ')'], sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
         [~, ~, textbound2] = DrawFormattedText(window, '2', sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
         [~, ~, textbound3] = DrawFormattedText(window, '3', sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
         [~, ~, textbound4] = DrawFormattedText(window, '4', sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
-        [~, ~, textbound5] = DrawFormattedText(window, ['5 (' highanxiety ')'], sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
+        [~, ~, textbound5] = DrawFormattedText(window, ['5 (' HIGHANXIETY ')'], sum(allRects([1 3],1))/2, sum(allRects([2 4],1))/2 , white);
         
         q = 1;
         buttons = 0;
@@ -1472,11 +1477,11 @@ function aMAS = GetAMAS
             DrawFormattedText(window, questions{q}, 'center', yCenter-300, [1 1 1], 70, [], [], 2);
             
             
-            DrawFormattedText(window, ['1 (' lowanxiety ')'], (sum(allRects([1 3],1))/2) - diff(textbound1([1,3]))/2, (sum(allRects([2 4],1))/2) + (diff(textbound1([2,4]))/4) , white);
+            DrawFormattedText(window, ['1 (' LOWANXIETY ')'], (sum(allRects([1 3],1))/2) - diff(textbound1([1,3]))/2, (sum(allRects([2 4],1))/2) + (diff(textbound1([2,4]))/4) , white);
             DrawFormattedText(window, '2', (sum(allRects([1 3],2))/2) - diff(textbound2([1,3]))/2, (sum(allRects([2 4],2))/2) + (diff(textbound2([2,4]))/4) , white);
             DrawFormattedText(window, '3', (sum(allRects([1 3],3))/2) - diff(textbound3([1,3]))/2, (sum(allRects([2 4],3))/2) + (diff(textbound3([2,4]))/4) , white);
             DrawFormattedText(window, '4', (sum(allRects([1 3],4))/2) - diff(textbound4([1,3]))/2, (sum(allRects([2 4],4))/2) + (diff(textbound4([2,4]))/4) , white);
-            DrawFormattedText(window, ['5 (' highanxiety ')'], (sum(allRects([1 3],5))/2) - diff(textbound5([1,3]))/2, (sum(allRects([2 4],5))/2) + (diff(textbound5([2,4]))/4) , white);
+            DrawFormattedText(window, ['5 (' HIGHANXIETY ')'], (sum(allRects([1 3],5))/2) - diff(textbound5([1,3]))/2, (sum(allRects([2 4],5))/2) + (diff(textbound5([2,4]))/4) , white);
 
             % Draw a white dot where the mouse is
             Screen('DrawDots', window, [x y], 10, white, [], 2);
