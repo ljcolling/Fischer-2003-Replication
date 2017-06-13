@@ -1,5 +1,5 @@
 function PTB_Fischer()
-codeVersion = '1.0-nl-2';
+codeVersion = '1.0-nl-3';
 
 % for latest version see: 
 % https://github.com/lindemann09/Fischer-2003-Replication/blob/master/ptb_fischer_rep.m 
