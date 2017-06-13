@@ -1,8 +1,8 @@
+function fischer_data_entry
+
 LANGUAGE = 'dutch'
 
-function fischer_data_entry
 thisPath = [cd filesep];
-
 subjectCode = input('Please enter the subject code: ','s');
 
 if LANGUAGE == 'dutch'
