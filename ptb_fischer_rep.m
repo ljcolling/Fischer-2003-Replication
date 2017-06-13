@@ -1288,7 +1288,7 @@ end
                     opts3 = 0;
                     opts2= 0;
                     opts4 = 0;
-                    clear buttons
+                    buttons = 0;
                     
                 end
                 
